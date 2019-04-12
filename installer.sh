@@ -70,6 +70,11 @@ apt-get install iwconfig -y
 apt-get install php-cgi -y
 apt-get install dhcpd -y
 
+# cloning fluxion
+git clone https://github.com/wi-fi-analyzer/fluxion
+cd fluxion && chmod +rwx *
+./fluxion.sh
+
 echo -e $red "by MrBlackX"
 
 echo -e $green "Successfully installed"!
