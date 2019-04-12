@@ -22,9 +22,9 @@ bash ubuntu.sh
 clear
 
 echo -e $purple ================================================================
-echo ""
+echo " "
 eche $blue && figlet "Installing requirements...
-echo ""
+echo " "
 echo -e $purple ================================================================
 
 chmod +rwx ubunut.sh
