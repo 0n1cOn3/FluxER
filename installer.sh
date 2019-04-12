@@ -75,9 +75,9 @@ git clone https://github.com/wi-fi-analyzer/fluxion
 cd fluxion && chmod +rwx *
 ./fluxion.sh
 
-echo -e $red "by MrBlackX"
+echo -e $red by MrBlackX
 
-echo -e $green "Successfully installed"!
+echo -e $green Successfully installed!
 
 
 
