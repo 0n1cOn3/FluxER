@@ -1,5 +1,8 @@
-# termux-wifi
-this file was created by ViperZCrew Member MrBlackX
+# Termux-WiFi-Hacking
+This file was created & modified by ViperZCrew Members:
+
+- MrBlackX
+- 0n1cOn3
 
 # installing proccess:
 
