@@ -9,6 +9,10 @@ This file was created & modified by ViperZCrew Members:
 NOTE: This Script working only on Termux [Android APP]
 
 ``
+pkg install git
+``
+
+``
 git clone https://github.com/ViperZCrew/termux-wifi && cd termux-wifi
 ``
 
