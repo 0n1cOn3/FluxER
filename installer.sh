@@ -32,7 +32,7 @@ echo -e $purple ================================================================
 chmod +rwx ubuntu.sh
 ./ubuntu.sh
 clear
-echo -e $purple Successfully installed!
+echo -e $purple "Successfully installed!"
 sleep 3
 ./start-ubuntu.sh
 clear
