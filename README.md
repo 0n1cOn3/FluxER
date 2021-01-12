@@ -1,4 +1,5 @@
 # Termux-WiFi-Hacking
+## Aktively Maintained!
 This file was created & modified by ViperZCrew/Rebl0xer Members:
 
 - MrBlackX/TheMasterCH
