@@ -10,7 +10,8 @@ green='e[1;32m'
 blue='\e[1;34m'
 purple='\e1;35m'
 
-echo -e $red "figlet Termux-Wifi"
+printf "${red}"
+figlet -w 200 -f standard Termux-wifi
 echo -e $blue "by MrBlackx/TheMasterCH"
 echo -e $purple "modified by 0n1cOn3"
 
@@ -25,14 +26,15 @@ clear
 
 echo -e $purple ================================================================
 echo " "
-eche -e $blue && figlet "Installing requirements...
+eche -e $blue && printf ${blue}
+figlet -w 200 -f standard Installing requirements...
 echo " "
 echo -e $purple ================================================================
 
 chmod +rwx ubuntu.sh
 ./ubuntu.sh
 clear
-echo -e $purple "Successfully installed!"
+echo -e ${purple}"Successfully installed!"
 sleep 3
 ./start-ubuntu.sh
 clear
@@ -47,9 +49,9 @@ git clone https://github.com/wi-fi-analyzer/fluxion
 cd fluxion && chmod +rwx *
 ./fluxion.sh
 
-echo -e $red "by MrBlackX/TheMasterCH"
-echo -e $purple "modified by 0n1cOn3
-echo -e $green "Successfully installed!"
+echo -e ${red}"by MrBlackX/TheMasterCH"
+echo -e ${purple}"modified by 0n1cOn3
+echo -e ${green}"Successfully installed!"
 
 
 
