@@ -10,6 +10,10 @@ This file was created & modified by ViperZCrew/Rebl0xer Members:
 NOTE: This Script does only work with the Termux Application for Android!
 
 ``
+pkg install git
+``
+
+``
 git clone https://github.com/0n1cOn3/termux-wifi && cd termux-wifi
 ``
 
