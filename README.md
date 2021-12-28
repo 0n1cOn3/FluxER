@@ -8,7 +8,7 @@ This file was created & modified by ViperZCrew/Rebl0xer Members:
 # installing proccess:
 
 NOTE: This Script does only work with the Termux Application for Android!
-
+PWN-Term is untested!
 ``
 pkg install git
 ``
