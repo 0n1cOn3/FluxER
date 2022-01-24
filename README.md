@@ -32,6 +32,8 @@ Thanks for downloading!
 
 ### Versions
 
+> 0.3 - Replaced  previous Ubuntu Repo Install against a newer Ubuntu Install Repo
+
 > 0.2 - fixing grammar issues in command + cleaned the code and made it smaller as in version 0.1
 
 > 0.1 - Added the first time
