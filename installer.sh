@@ -18,8 +18,10 @@ termux-setup-storage
 apt install git curl python2 python3
 clear
 
-apt install figlet wget proot -y
-wget https://raw.githubusercontent.com/Neo-Oli/termux-ubuntu/master/ubuntu.sh
+apt install figlet wget proot tar curl -y
+# new Repo needs to be used cause the owner seems to discontinue the project (Readonly)wget https://raw.githubusercontent.com/Neo-Oli/termux-ubuntu/master/ubuntu.sh
+wget https://raw.githubusercontent.com/tuanpham-dev/termux-ubuntu/master/ubuntu.sh
+chmod +x ubuntu.sh
 bash ubuntu.sh
 clear
 
