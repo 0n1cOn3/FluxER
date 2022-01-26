@@ -27,7 +27,7 @@ chmod +rwx installer.sh && ./installer.sh
 That it's.
 
 I added fluxion for you so it will start into ubuntu if you try to hack wifi.
-Good luck 😁
+Good luck 
 Thanks for downloading!
 
 ### Versions
@@ -37,3 +37,5 @@ Thanks for downloading!
 > 0.2 - fixing grammar issues in command + cleaned the code and made it smaller as in version 0.1
 
 > 0.1 - Added the first time
+
+[![0n1cOn3's GitHub stats](https://github-readme-stats.vercel.app/api?username=0n1cOn3)](https://github.com/anuraghazra/github-readme-stats)
