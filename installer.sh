@@ -1,4 +1,3 @@
-GNU nano 6.3                                                installer.sh
 #!/bin/bash
 # Created by MrBlackX/TheMasterCH
 # Modified by: 0n1coOn3
@@ -31,8 +30,7 @@ apt-get upgrade -y
 apt-get install git net-tools wireless-tools aircrack-ng  unzip -y
 
 # cloning fluxion
-
-
+git clone https://www.github.com/FluxionNetwork/fluxion.git
 echo -e ${blue} "Installation completed"
 echo -e ${red} "Made by : MrBlackX/TheMasterCH"
 echo -e "Modified by : 0n1cOn3"
