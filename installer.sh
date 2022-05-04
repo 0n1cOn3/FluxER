@@ -1,57 +1,39 @@
+GNU nano 6.3                                                installer.sh
 #!/bin/bash
 # Created by MrBlackX/TheMasterCH
 # Modified by: 0n1coOn3
 # Version 0.2
-
-pkg install figlet -y 
-
-red='\e[1;31m'
-green='e[1;32m'
-blue='\e[1;34m'
-purple='\e1;35m'
-
-echo -e $red "figlet Termux-Wifi"
-echo -e $blue "by MrBlackx/TheMasterCH"
-echo -e $purple "modified by 0n1cOn3"
-
+pkg install figlet -y
+red=$(tput setaf 1)
+blue=$(tput setaf 4)
+white=$(tput setaf 7)
 termux-setup-storage
 apt install git curl python2 python3
 clear
 
-apt install figlet wget proot tar curl -y
-# new Repo needs to be used cause the owner seems to discontinue the project (Readonly)wget https://raw.githubusercontent.com/Neo-Oli/termux-ubuntu/master/ubuntu.sh
-wget https://raw.githubusercontent.com/tuanpham-dev/termux-ubuntu/master/ubuntu.sh
-chmod +x ubuntu.sh
-bash ubuntu.sh
+apt install proot-distro
+proot-distro install ubuntu
 clear
 
-echo -e $purple ================================================================
+echo -e ${red} ================================================================
 echo " "
-echo -e $blue && figlet "Installing requirements...
+echo -e ${blue} && echo -e "Installing requirements..."
 echo " "
-echo -e $purple ================================================================
-
-chmod +rwx ubuntu.sh
-./ubuntu.sh
+echo -e ${red} ================================================================
+#proot-distro login ubuntu
 clear
-echo -e $purple "Successfully installed!"
+echo -e ${white} "Successfully installed!"
 sleep 3
-./start-ubuntu.sh
 clear
 
-apt-get update
+apt-get update -y
 apt-get upgrade -y
-apt-get install git net-tools wireless_tools aircrack-ng xterm isc-dhcp-server reaver ettercap ettercap-text-only ettercap-graphical dsniff hostapd iptables bully ssltrip unzip expect expect-dev lighttpd hashcat pixiewps curl pip pip3 iwconfig php-cgi -y
-dhcpd -y
+apt-get install git net-tools wireless-tools aircrack-ng  unzip -y
 
 # cloning fluxion
-git clone https://github.com/wi-fi-analyzer/fluxion
-cd fluxion && chmod +rwx *
-./fluxion.sh
-
-echo -e $red "by MrBlackX/TheMasterCH"
-echo -e $purple "modified by 0n1cOn3
-echo -e $green "Successfully installed!"
 
 
-
+echo -e ${blue} "Installation completed"
+echo -e ${red} "Made by : MrBlackX/TheMasterCH"
+echo -e "Modified by : 0n1cOn3"
+echo -e "Under development.Please be patient for full version"
