@@ -45,7 +45,7 @@ apt-get install git net-tools wireless_tools aircrack-ng xterm isc-dhcp-server r
 dhcpd -y
 
 # cloning fluxion
-git clone https://github.com/wi-fi-analyzer/fluxion
+git clone https://www.github.com/FluxionNetwork/fluxion.git
 cd fluxion && chmod +rwx *
 ./fluxion.sh
 
