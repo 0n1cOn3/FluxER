@@ -1,47 +1,27 @@
-# Termux WiFi Hacking
-Actively maintained! - Till today :) 
+# Fluxion Installer
 
-## Installation process
+This Bash script installs and runs the Fluxion tool, a wireless security auditing tool used to perform attacks such as WPA/WPA2 cracking and MITM attacks.
 
-NOTE: This script only works with the Termux application for Android!
-PWN-Term is untested!
+__Requirements:__
 
-``
-pkg install git
-``
+- A device running Termux
+- Internet connection
 
-``
-git clone https://github.com/0n1cOn3/termux-wifi && cd termux-wifi
-``
+## Usage
 
-Set permissions on the executable and then run it:
+Clone this repository or download and extract the script file.
+Open the terminal and navigate to the script directory.
+Run the script with the following command:
 
-``
-chmod +rwx installer.sh && ./installer.sh
-``
+-  ./fluxion_installer.sh
 
-That's it.
+The script will install all necessary dependencies, download and install the Fluxion tool, and start the Fluxion tool. (Ubuntu chroot)
 
-Fluxion has been added and will automatically start on Ubuntu when you try to hack a Wi-Fi.
-Good luck!
-Thanks for downloading!
+## Credits
+
+- Original script by MrBlackX/TheMasterCH
+- Modified by 0n1cOn3
 
 ## Disclaimer
 
-This script was created for training purposes,
-All persons / groups mentioned disclaim any liability.
-
-Created by:
-ViperZCrew/Rebl0xer Members 
-- MrBlackX/TheMasterCH
-- 0n1cOn3
-
-### Versions
-
-> 0.3 - Replaced the outdated Ubuntu source with a current Ubuntu source
-
-> 0.2 - Fixed grammar errors in the command + cleaned up the code and made it smaller than version 0.1
-
-> 0.1 - Released for the first time
-
-[![0n1cOn3's GitHub stats](https://github-readme-stats.vercel.app/api?username=0n1cOn3)](https://github.com/anuraghazra/github-readme-stats)
+This script is intended for educational purposes only. The use of this script for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state, and federal laws. The authors of this script assume no liability and are not responsible for any misuse or damage caused by this script.
