@@ -1,6 +1,6 @@
 #!/bin/bash
 # Created by MrBlackX/TheMasterCH
-# Modified by: 0n1coOn3
+# Modified by: 0n1cOn3
 # Version 0.5
 
 # Install dependencies
