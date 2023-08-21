@@ -16,6 +16,32 @@ echo -e "$red" "figlet Termux-Wifi"
 echo -e "$blue" "by MrBlackx/TheMasterCH"
 echo -e "$purple" "modified by 0n1cOn3"
 
+if [ "$first" != 1 ]; then
+    if [ ! -f "$tarball" ]; then
+        echo "Download Rootfs, this may take a while based on your internet speed."
+        case $(dpkg --print-architecture) in
+            aarch64)
+                archurl="arm64" ;;
+            amd64|x86_64)
+                archurl="amd64" ;;
+            *)
+                echo "Unknown architecture"; exit 1 ;;
+        esac
+
+        if [ "$archurl" = "arm64" ]; then
+            wget "https://github.com/Neo-Oli/termux-ubuntu/raw/master/ubuntu.sh" -O ubuntu.sh
+        elif [ "$archurl" = "amd64" ]; then
+            wget "https://github.com/Neo-Oli/termux-ubuntu/raw/master/ubuntu.sh" -O ubuntu.sh
+        else
+            echo "Unknown architecture"; exit 1
+        fi
+
+        if [ "$archurl" = "armhf" ]; then
+            wget "https://partner-images.canonical.com/core/unsupported/disco/current/ubuntu-disco-core-cloudimg-armhf-root.tar.gz" -O "$tarball"
+        fi
+    fi
+fi
+
 prepare_environment() {
   termux-setup-storage
   apt install git curl python2 python3 -y
