@@ -5,7 +5,7 @@
 
 ___📋 Requirements :___
 
-- A device running Termux
+- A device running Termux (latest FluxER Release only supports ARM64 (64bit)
 - Internet connection
 
 ## 💻 Usage
