@@ -22,8 +22,10 @@ The script will install all necessary dependencies, download and install the Flu
 ## 👥 Credits
 
 - Original script by MrBlackX/TheMasterCH
-- Modified by 0n1cOn3
+- Maintained by 0n1cOn3
 
 ## ⚠️ Disclaimer
 
-This script is intended for educational purposes only. The use of this script for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state, and federal laws. The authors of this script assume no liability and are not responsible for any misuse or damage caused by this script.
+This script is intended for educational purposes only. 
+The use of this script for attacking targets without prior mutual consent is illegal. 
+It is the end user's responsibility to obey all applicable local, state, and federal laws. The authors of this script assume no liability and are not responsible for any misuse or damage caused by this script.
