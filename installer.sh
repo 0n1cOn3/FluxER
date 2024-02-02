@@ -1,7 +1,7 @@
 #!/bin/bash
 # Created by MrBlackX/TheMasterCH
-# Modified by: 0n1cOn3
-# Version 0.5
+# Actual maintainer: 0n1cOn3
+# Version 0.6
 
 # Install dependencies
 pkg install figlet -y &> /dev/null
