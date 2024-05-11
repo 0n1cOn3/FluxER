@@ -5,8 +5,7 @@
 
 ___📋 Requirements :___
 
-- A device running Termux (latest FluxER Release only supports ARM64 (64bit)
-- devices with armfs (32bit) can test the beta installer [here](https://github.com/0n1cOn3/FluxER/tree/Beta-x86-and-x64-support)
+- A device running Termux (This FluxER Release only supports ARM32 (32bit)
 - Internet connection
 
 ## 💻 Usage
