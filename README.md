@@ -1,5 +1,10 @@
 <h1 align="center">🔒 FluxER</h1>
-<p align="center">This Bash script installs and runs the Fluxion tool, a wireless security auditing tool used to perform attacks such as WPA/WPA2 cracking and MITM attacks.</p>        
+<p align="center">This Bash script installs and runs the Fluxion tool, a wireless security auditing tool used to perform attacks such as WPA/WPA2 cracking and MITM attacks.</p>
+
+---
+
+<h1 align="center">⚠️ SUPPORT FOR FluxER 32BIT WILL END ON 31.DECEMBER 2025! ⚠️</h1> 
+<h1 align="center">https://github.com/0n1cOn3/FluxER/tree/Beta-x86-and-x64-support</h1>
 
 [![LOGO](https://img.shields.io/github/issues/0n1cOn3/termux-wifi?style=plastic)]() [![LOGO](https://img.shields.io/github/issues-pr/0n1cOn3/termux-wifi?style=plastic)]() [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
                 
@@ -32,5 +37,3 @@ The script will install all necessary dependencies, download and install the Flu
 This script is intended for educational purposes only. 
 The use of this script for attacking targets without prior mutual consent is illegal. 
 It is the end user's responsibility to obey all applicable local, state, and federal laws. The authors of this script assume no liability and are not responsible for any misuse or damage caused by this script.
-
-FluxER 32bit support will be dropped at the end of 2025.
