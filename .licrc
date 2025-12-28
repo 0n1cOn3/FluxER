@@ -1,23 +1,55 @@
 [licenses]
-# This indicates which are the only licenses that Licensebat will accept.
-# The rest will be flagged as not allowed.
-accepted = ["MIT", "MSC", "BSD"]
-# This will indicate which licenses are not accepted.
-# The rest will be accepted, except for the unknown licenses or dependencies without licenses.
-# unaccepted = ["LGPL"]
-# Note that only one of the previous options can be enabled at once. 
-# If both of them are informed, only accepted will be considered.
+
+# FluxER License Configuration
+# Only these licenses will be accepted by Licensebat
+# FluxER is GPL-3.0, but dependencies may use compatible licenses
+
+accepted = [
+    "MIT",
+    "BSD",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "Apache-2.0",
+    "GPL-3.0",
+    "GPL-3.0-or-later",
+    "GPL-2.0",
+    "GPL-2.0-or-later",
+    "ISC",
+    "CC0-1.0",
+    "Unlicense"
+]
+
+# Explicitly unaccepted licenses (uncomment if needed)
+# unaccepted = ["LGPL", "AGPL-3.0", "proprietary"]
+
+# Note: Only one of 'accepted' or 'unaccepted' can be active
+# If both are defined, only 'accepted' will be considered
 
 [dependencies]
-# This will allow users to flag some dependencies so that Licensebat will not check for their license.
-ignored=["ignored_dep1", "ignored_dep2"]
-# If set to true, Licensebat will ignore the dev dependencies.
+
+# Dependencies to ignore during license checks
+# Add specific dependencies that may have unclear or missing licenses
+ignored = [
+    # Add any problematic dependencies here
+    # Example: "some-legacy-package"
+]
+
+# Ignore development dependencies (testing, linting, etc.)
 ignore_dev_dependencies = true
-# If set to true, Licensebat will ignore the optional dependencies.
+
+# Ignore optional dependencies
 ignore_optional_dependencies = true
 
 [behavior]
-# False by default, if true, it will only run the checks when one of the dependency files or the .licrc file has been modified.
+
+# Only run checks when dependency files or .licrc are modified
+# Improves CI/CD performance by skipping unnecessary checks
 run_only_on_dependency_modification = true
-# False by default, if true, it will never block the build.
+
+# Set to false to block PRs with license violations
+# Recommended: false for strict license compliance
 do_not_block_pr = false
+
+# Additional behavior settings
+# fail_on_warning = false  # Fail build on warnings (not just errors)
+# allow_unknown_licenses = false  # Block dependencies with unknown licenses
