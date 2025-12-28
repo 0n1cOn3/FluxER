@@ -1,5 +1,5 @@
 #!/bin/bash
-# FluxER - Fluxion Installer for Termux
+# FluxER - Fluxion Easy Runner for Termux
 # Created by MrBlackX/TheMasterCH
 # Maintainer: 0n1cOn3
 # Version: 1.0 (Termux Optimized)
@@ -12,10 +12,11 @@ set -euo pipefail
 readonly SCRIPT_VERSION="1.0"
 readonly SCRIPT_NAME="FluxER"
 readonly FLUXION_REPO="https://github.com/FluxionNetwork/fluxion.git"
-readonly UBUNTU_SCRIPT="https://raw.githubusercontent.com/tuanpham-dev/termux-ubuntu/master/ubuntu.sh"
+readonly DISTRO_NAME="ubuntu"  # Can be changed to debian, kali-nethunter, etc.
 
 # FluxER metadata
-readonly FLUXER_DESCRIPTION="FluxER Installer - Automated Fluxion installer for Termux"
+readonly FLUXER_DESCRIPTION="Fluxion Easy Runner - Automated Fluxion installer for Termux"
+readonly USE_PROOT_DISTRO=true  # Use official proot-distro instead of legacy scripts
 
 # Termux-specific paths
 readonly TERMUX_PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
@@ -216,79 +217,65 @@ prepare_termux_environment() {
 download_ubuntu_script() {
     print_banner
     echo -e "${PURPLE}════════════════════════════════════════${NC}"
-    echo -e "${BLUE}Stage 2: Downloading Ubuntu Script${NC}"
+    echo -e "${BLUE}Stage 2: Installing proot-distro${NC}"
     echo -e "${PURPLE}════════════════════════════════════════${NC}"
     echo ""
     
     cd "$TERMUX_HOME" || exit 1
     
-    if [[ -f "ubuntu.sh" ]]; then
-        log_warning "ubuntu.sh already exists"
-        if ! confirm_action "Overwrite existing ubuntu.sh?"; then
-            log_info "Using existing ubuntu.sh"
-            chmod +x ubuntu.sh
-            return 0
-        fi
-        rm -f ubuntu.sh
+    if command -v proot-distro &>/dev/null; then
+        log_success "proot-distro already installed"
+        return 0
     fi
     
-    log_info "Downloading Ubuntu installation script..."
+    log_info "Installing official proot-distro..."
     
-    # Download with progress bar
-    if wget --show-progress -q "$UBUNTU_SCRIPT" -O ubuntu.sh; then
-        chmod +x ubuntu.sh
-        log_success "Ubuntu script downloaded ($(du -h ubuntu.sh | cut -f1))"
+    if install_package "proot-distro"; then
+        log_success "proot-distro installed successfully"
     else
-        log_error "Failed to download Ubuntu script"
-        log_info "Alternative: Download manually from $UBUNTU_SCRIPT"
+        log_error "Failed to install proot-distro"
         exit 1
     fi
     
-    sleep 1
+    # Show available distributions
+    log_info "Available distributions:"
+    proot-distro list | head -10
+    
+    sleep 2
 }
 
 install_ubuntu_environment() {
     print_banner
     echo -e "${PURPLE}════════════════════════════════════════${NC}"
-    echo -e "${BLUE}Stage 3: Installing Ubuntu (proot)${NC}"
+    echo -e "${BLUE}Stage 3: Installing Ubuntu (proot-distro)${NC}"
     echo -e "${PURPLE}════════════════════════════════════════${NC}"
     echo ""
     
     cd "$TERMUX_HOME" || exit 1
     
-    if [[ ! -f "ubuntu.sh" ]]; then
-        log_error "ubuntu.sh not found in $TERMUX_HOME"
-        exit 1
-    fi
-    
     # Check if already installed
-    if [[ -f "start-ubuntu.sh" ]] && [[ -d "ubuntu-fs" ]]; then
-        log_warning "Ubuntu appears to be already installed"
+    if proot-distro list 2>/dev/null | grep -q "installed.*$DISTRO_NAME"; then
+        log_warning "Ubuntu is already installed"
         if ! confirm_action "Reinstall Ubuntu?"; then
-            log_info "Skipping Ubuntu installation"
+            log_info "Using existing Ubuntu installation"
             return 0
         fi
+        log_info "Removing existing installation..."
+        proot-distro remove "$DISTRO_NAME"
     fi
     
-    log_info "Installing Ubuntu (this will take 5-15 minutes)..."
+    log_info "Installing Ubuntu via proot-distro (5-10 minutes)..."
     log_warning "Do not close Termux during installation!"
     echo ""
     
-    # Run installation with output
-    if bash ubuntu.sh; then
+    # Install with progress
+    if proot-distro install "$DISTRO_NAME"; then
         log_success "Ubuntu installation completed!"
     else
         log_error "Ubuntu installation failed (exit code: $?)"
         exit 1
     fi
     
-    # Verify installation
-    if [[ ! -f "start-ubuntu.sh" ]]; then
-        log_error "start-ubuntu.sh not created. Installation may have failed."
-        exit 1
-    fi
-    
-    chmod +x start-ubuntu.sh
     log_success "Ubuntu environment ready"
     sleep 2
 }
@@ -302,19 +289,20 @@ setup_fluxion() {
     
     cd "$TERMUX_HOME" || exit 1
     
-    if [[ ! -f "start-ubuntu.sh" ]]; then
-        log_error "start-ubuntu.sh not found! Ubuntu is not installed."
+    # Verify proot-distro installation
+    if ! proot-distro list 2>/dev/null | grep -q "installed.*$DISTRO_NAME"; then
+        log_error "$DISTRO_NAME is not installed!"
         exit 1
     fi
     
     log_info "Preparing Fluxion installation script..."
     
-    # Create optimized installation script
+    # Create optimized installation script for proot-distro
     cat > install_fluxion.sh << 'INSTALL_SCRIPT'
 #!/bin/bash
 set -e
 
-echo "[INFO] Updating Ubuntu package lists..."
+echo "[INFO] Updating package lists..."
 apt-get update -qq
 
 echo "[INFO] Upgrading existing packages..."
@@ -329,10 +317,11 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
     isc-dhcp-server \
     hostapd \
     iptables \
-    dsniff \
+    dnsmasq \
     lighttpd \
     php-cgi \
     curl \
+    wget \
     unzip \
     2>&1 | grep -v "^debconf:"
 
@@ -344,12 +333,13 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
     hashcat \
     ettercap-text-only \
     sslstrip \
-    2>&1 | grep -v "^debconf:" || echo "[WARN] Some optional tools failed to install"
+    macchanger \
+    2>&1 | grep -v "^debconf:" || echo "[WARN] Some optional tools failed"
 
 cd /root
 
 if [ -d "fluxion" ]; then
-    echo "[INFO] Updating existing Fluxion installation..."
+    echo "[INFO] Updating existing Fluxion..."
     cd fluxion
     git pull -q
 else
@@ -365,10 +355,11 @@ INSTALL_SCRIPT
     chmod +x install_fluxion.sh
     
     log_info "Installing tools in Ubuntu environment..."
-    log_warning "This will take 10-20 minutes depending on connection speed"
+    log_warning "This will take 10-20 minutes depending on connection"
     echo ""
     
-    if ./start-ubuntu.sh -c "bash $TERMUX_HOME/install_fluxion.sh"; then
+    # Run installation in proot-distro
+    if proot-distro login "$DISTRO_NAME" --shared-tmp -- bash -c "cd $TERMUX_HOME && bash install_fluxion.sh"; then
         log_success "All tools installed successfully!"
     else
         log_error "Tool installation failed"
@@ -385,13 +376,15 @@ INSTALL_SCRIPT
     echo -e "${GREEN}╚════════════════════════════════════════╝${NC}"
     echo ""
     echo -e "${BLUE}To start Fluxion:${NC}"
-    echo -e "  ${YELLOW}1.${NC} cd $TERMUX_HOME"
-    echo -e "  ${YELLOW}2.${NC} ./start-ubuntu.sh"
-    echo -e "  ${YELLOW}3.${NC} cd fluxion"
-    echo -e "  ${YELLOW}4.${NC} ./fluxion.sh"
+    echo -e "  ${YELLOW}1.${NC} proot-distro login $DISTRO_NAME"
+    echo -e "  ${YELLOW}2.${NC} cd fluxion"
+    echo -e "  ${YELLOW}3.${NC} ./fluxion.sh"
     echo ""
-    echo -e "${PURPLE}Quick start alias:${NC}"
-    echo -e "  ${YELLOW}./start-ubuntu.sh -c 'cd fluxion && ./fluxion.sh'${NC}"
+    echo -e "${PURPLE}Quick start (one command):${NC}"
+    echo -e "  ${YELLOW}proot-distro login $DISTRO_NAME --shared-tmp -- bash -c 'cd fluxion && ./fluxion.sh'${NC}"
+    echo ""
+    echo -e "${BLUE}Or create an alias in ~/.bashrc:${NC}"
+    echo -e "  ${YELLOW}alias fluxion='proot-distro login $DISTRO_NAME -- bash -c \"cd fluxion && ./fluxion.sh\"'${NC}"
     echo ""
 }
 
@@ -416,7 +409,7 @@ main() {
     echo -e "${YELLOW}⚠ WARNING ⚠${NC}"
     echo "This script will:"
     echo "  • Install Ubuntu (proot) in Termux (~200-500MB)"
-    echo "  • Install wireless pentesting tools including fluxion"
+    echo "  • Install wireless pentesting tools"
     echo "  • Require storage permissions"
     echo "  • Take 15-30 minutes to complete"
     echo ""
