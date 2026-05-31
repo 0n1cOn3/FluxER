@@ -29,7 +29,7 @@
 ## 📋 Requirements
 
 ### Minimum Requirements
-- **OS**: Termux on Android 7.0+
+- **OS**: Termux on Android 9.0+
 - **Architecture**: ARM64 (64-bit)
 - **Storage**: ~500MB-1GB free space
 - **Internet**: Stable connection for downloads
