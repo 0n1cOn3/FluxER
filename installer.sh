@@ -244,6 +244,14 @@ download_ubuntu_script() {
     sleep 2
 }
 
+# proot-distro lists distributions differently depending on the release: v4
+# prints "* < Name < alias > >" and v5 prints installed container names, so
+# parsing that text says nothing reliable about the requested alias. Let
+# proot-distro decide by entering the distribution instead.
+is_distro_installed() {
+    proot-distro login "$DISTRO_NAME" -- true >/dev/null 2>&1
+}
+
 install_ubuntu_environment() {
     print_banner
     echo -e "${PURPLE}════════════════════════════════════════${NC}"
@@ -254,7 +262,7 @@ install_ubuntu_environment() {
     cd "$TERMUX_HOME" || exit 1
     
     # Check if already installed
-    if proot-distro list 2>/dev/null | grep -q "installed.*$DISTRO_NAME"; then
+    if is_distro_installed; then
         log_warning "Ubuntu is already installed"
         if ! confirm_action "Reinstall Ubuntu?"; then
             log_info "Using existing Ubuntu installation"
@@ -290,7 +298,7 @@ setup_fluxion() {
     cd "$TERMUX_HOME" || exit 1
     
     # Verify proot-distro installation
-    if ! proot-distro list 2>/dev/null | grep -q "installed.*$DISTRO_NAME"; then
+    if ! is_distro_installed; then
         log_error "$DISTRO_NAME is not installed!"
         exit 1
     fi
