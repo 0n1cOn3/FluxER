@@ -61,12 +61,12 @@
 
 4. **Make the script executable**:
    ```bash
-   chmod +x fluxer.sh
+   chmod +x installer.sh
    ```
 
 5. **Run FluxER**:
    ```bash
-   ./fluxer.sh
+   ./installer.sh
    ```
 
 The installer will:
@@ -84,21 +84,20 @@ The installer will:
 After installation completes, start Fluxion with:
 
 ```bash
-cd ~
-./start-ubuntu.sh
+proot-distro login ubuntu
 cd fluxion
 ./fluxion.sh
 ```
 
 ### Quick Launch (One-liner)
 ```bash
-./start-ubuntu.sh -c 'cd fluxion && ./fluxion.sh'
+proot-distro login ubuntu --shared-tmp -- bash -c 'cd fluxion && ./fluxion.sh'
 ```
 
 ### Create an Alias (Optional)
 Add to `~/.bashrc` for easy access:
 ```bash
-echo "alias fluxion='~/start-ubuntu.sh -c \"cd fluxion && ./fluxion.sh\"'" >> ~/.bashrc
+echo "alias fluxion='proot-distro login ubuntu -- bash -c \"cd fluxion && ./fluxion.sh\"'" >> ~/.bashrc
 source ~/.bashrc
 ```
 
@@ -109,16 +108,17 @@ Then simply run: `fluxion`
 ## 🛠️ What Gets Installed
 
 ### Termux Packages
-- Git, Wget, Curl
-- Proot (for Ubuntu environment)
+- Git, Wget, Curl, Tar
+- Proot and proot-distro (for Ubuntu environment)
 - Python 2 & 3 (optional)
 - Figlet (for banners)
 
 ### Ubuntu Environment
-- Wireless Tools (aircrack-ng, hostapd, etc.)
-- Network utilities (iptables, dsniff)
+- Wireless Tools (aircrack-ng, hostapd, wireless-tools)
+- Network services (iptables, dnsmasq, isc-dhcp-server)
+- Web/PHP stack for the captive portal (lighttpd, php-cgi)
 - Fluxion framework
-- Optional: reaver, bully, pixiewps, hashcat
+- Optional: reaver, bully, pixiewps, hashcat, ettercap, sslstrip, macchanger
 
 ---
 
@@ -137,22 +137,22 @@ termux-setup-storage
 # Clear cache and retry
 apt clean
 pkg update
-./fluxer.sh
+./installer.sh
 ```
 
 **Ubuntu environment won't start**
 ```bash
-# Reinstall proot
-pkg reinstall proot
+# Reinstall proot and proot-distro
+pkg reinstall proot proot-distro
 ```
 
 **Fluxion not found**
 ```bash
-# Verify installation
-ls ~/fluxion
+# Verify installation (Fluxion lives in /root of the Ubuntu environment)
+proot-distro login ubuntu -- bash -c 'ls /root/fluxion'
 # If missing, reinstall
-rm -rf ~/fluxion
-./fluxer.sh
+proot-distro login ubuntu -- bash -c 'rm -rf /root/fluxion'
+./installer.sh
 ```
 
 ---
