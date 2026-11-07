@@ -321,7 +321,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 # apt-get prints nothing on success with -qq, so its exit status decides the
 # result while the debconf filter only cleans up already captured output.
-apt_get() {
+run_apt_get() {
     local output
     if output=$(apt-get "$@" 2>&1); then
         if [[ -n "$output" ]]; then
@@ -336,13 +336,13 @@ apt_get() {
 }
 
 echo "[INFO] Updating package lists..."
-apt_get update -qq
+run_apt_get update -qq
 
 echo "[INFO] Upgrading existing packages..."
-apt_get upgrade -y -qq
+run_apt_get upgrade -y -qq
 
 echo "[INFO] Installing wireless tools and dependencies..."
-apt_get install -y -qq \
+run_apt_get install -y -qq \
     git \
     net-tools \
     wireless-tools \
@@ -358,7 +358,7 @@ apt_get install -y -qq \
     unzip
 
 echo "[INFO] Installing optional penetration testing tools..."
-apt_get install -y -qq \
+run_apt_get install -y -qq \
     reaver \
     bully \
     pixiewps \
