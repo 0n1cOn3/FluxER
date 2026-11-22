@@ -90,6 +90,13 @@ is_package_installed() {
     dpkg -s "$1" &>/dev/null
 }
 
+# Hide the debconf warning apt prints when apt-utils is absent. The filter runs on
+# already captured output so that it cannot decide whether apt succeeded.
+print_apt_output() {
+    [[ -z "$1" ]] && return 0
+    printf '%s\n' "$1" | grep -v "^debconf:" || true
+}
+
 install_package() {
     local package="$1"
     local skip_recommends="${2:-false}"
@@ -104,13 +111,18 @@ install_package() {
     local apt_opts="-y -qq"
     [[ "$skip_recommends" == "true" ]] && apt_opts="$apt_opts --no-install-recommends"
     
-    if apt install $apt_opts "$package" 2>&1 | grep -v "^debconf:"; then
+    # apt -qq prints nothing on success, so its exit status has to be checked
+    # directly; piping into grep made the filter's status the result.
+    local apt_output
+    if apt_output=$(apt install $apt_opts "$package" 2>&1); then
+        print_apt_output "$apt_output"
         log_success "$package installed"
         return 0
-    else
-        log_error "Failed to install $package"
-        return 1
     fi
+    
+    print_apt_output "$apt_output" >&2
+    log_error "Failed to install $package"
+    return 1
 }
 
 confirm_action() {
@@ -131,10 +143,13 @@ confirm_action() {
 
 update_package_lists() {
     log_info "Updating package lists..."
-    if apt update -qq 2>&1 | grep -E "(Err:|E:)"; then
+    local apt_output
+    if ! apt_output=$(apt update -qq 2>&1); then
+        print_apt_output "$apt_output" >&2
         log_error "Failed to update package lists"
         return 1
     fi
+    print_apt_output "$apt_output"
     log_success "Package lists updated"
 }
 
@@ -310,14 +325,32 @@ setup_fluxion() {
 #!/bin/bash
 set -e
 
+export DEBIAN_FRONTEND=noninteractive
+
+# apt-get prints nothing on success with -qq, so its exit status decides the
+# result while the debconf filter only cleans up already captured output.
+run_apt_get() {
+    local output
+    if output=$(apt-get "$@" 2>&1); then
+        if [[ -n "$output" ]]; then
+            printf '%s\n' "$output" | grep -v "^debconf:" || true
+        fi
+        return 0
+    fi
+    if [[ -n "$output" ]]; then
+        printf '%s\n' "$output" | grep -v "^debconf:" >&2 || true
+    fi
+    return 1
+}
+
 echo "[INFO] Updating package lists..."
-apt-get update -qq
+run_apt_get update -qq
 
 echo "[INFO] Upgrading existing packages..."
-apt-get upgrade -y -qq 2>&1 | grep -v "^debconf:"
+run_apt_get upgrade -y -qq
 
 echo "[INFO] Installing wireless tools and dependencies..."
-DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
+run_apt_get install -y -qq \
     git \
     net-tools \
     wireless-tools \
@@ -330,11 +363,10 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
     php-cgi \
     curl \
     wget \
-    unzip \
-    2>&1 | grep -v "^debconf:"
+    unzip
 
 echo "[INFO] Installing optional penetration testing tools..."
-DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
+run_apt_get install -y -qq \
     reaver \
     bully \
     pixiewps \
@@ -342,7 +374,7 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
     ettercap-text-only \
     sslstrip \
     macchanger \
-    2>&1 | grep -v "^debconf:" || echo "[WARN] Some optional tools failed"
+    || echo "[WARN] Some optional tools failed"
 
 cd /root
 
